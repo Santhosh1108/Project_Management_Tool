@@ -1,38 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Project Management Tool</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <header>
     <h1>Project Management Dashboard</h1>
-    <p>Organize. Prioritize. Deliver.</p>
+    <p>Plan • Track • Deliver</p>
   </header>
 
   <section class="controls">
-    <input type="text" id="taskTitle" placeholder="Task title">
-    
+    <input type="text" id="taskTitle" placeholder="Enter task title" />
+
     <select id="priority">
       <option value="Low">Low Priority</option>
       <option value="Medium">Medium Priority</option>
       <option value="High">High Priority</option>
     </select>
 
-    <input type="date" id="dueDate">
+    <input type="date" id="dueDate" />
+
+    <select id="role">
+      <option value="Admin">Admin</option>
+      <option value="Member">Member</option>
+    </select>
 
     <button id="addTask">Add Task</button>
   </section>
 
+  <section class="filters">
+    <input type="text" id="search" placeholder="Search tasks..." />
+    <select id="filterPriority">
+      <option value="">All Priorities</option>
+      <option value="High">High</option>
+      <option value="Medium">Medium</option>
+      <option value="Low">Low</option>
+    </select>
+  </section>
+
   <section class="stats">
-    <p>Total Tasks: <span id="totalTasks">0</span></p>
+    <p>Total: <span id="totalTasks">0</span></p>
     <p>Completed: <span id="completedTasks">0</span></p>
     <p>Progress: <span id="progress">0%</span></p>
   </section>
 
-  <section class="task-board" id="taskBoard"></section>
+  <section class="kanban">
+    <div class="column" data-status="Todo">
+      <h2>Todo</h2>
+      <div class="task-list" id="todo"></div>
+    </div>
+
+    <div class="column" data-status="In Progress">
+      <h2>In Progress</h2>
+      <div class="task-list" id="inprogress"></div>
+    </div>
+
+    <div class="column" data-status="Completed">
+      <h2>Completed</h2>
+      <div class="task-list" id="completed"></div>
+    </div>
+  </section>
 
   <script src="js/storage.js"></script>
   <script src="js/ui.js"></script>
