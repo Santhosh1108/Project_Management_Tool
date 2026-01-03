@@ -1,20 +1,22 @@
 function renderTasks(tasks) {
-  const board = document.getElementById("taskBoard");
-  board.innerHTML = "";
+  document.getElementById("todo").innerHTML = "";
+  document.getElementById("inprogress").innerHTML = "";
+  document.getElementById("completed").innerHTML = "";
 
   tasks.forEach((task, index) => {
     const div = document.createElement("div");
     div.className = `task ${task.priority.toLowerCase()}`;
+    div.draggable = true;
+    div.dataset.index = index;
 
     div.innerHTML = `
-      <h3>${task.title}</h3>
-      <small>Priority: ${task.priority}</small><br>
-      <small>Due: ${task.dueDate || "No deadline"}</small><br>
-      <small>Status: ${task.status}</small><br>
-      ${task.status !== "Completed" ? `<button onclick="completeTask(${index})">Mark Complete</button>` : ""}
+      <strong>${task.title}</strong><br>
+      <small>${task.priority} • ${task.dueDate || "No deadline"}</small>
     `;
 
-    board.appendChild(div);
+    if (task.status === "Todo") document.getElementById("todo").appendChild(div);
+    if (task.status === "In Progress") document.getElementById("inprogress").appendChild(div);
+    if (task.status === "Completed") document.getElementById("completed").appendChild(div);
   });
 
   updateStats(tasks);
