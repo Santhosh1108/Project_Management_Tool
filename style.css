@@ -19,6 +19,10 @@ header h1 {
   font-size: 32px;
 }
 
+header p {
+  opacity: 0.6;
+}
+
 .controls,
 .filters,
 .stats {
@@ -34,6 +38,7 @@ button {
   padding: 10px;
   border-radius: 6px;
   border: none;
+  font-size: 14px;
 }
 
 button {
@@ -42,20 +47,31 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background: #1d4ed8;
+}
+
 .kanban {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
+@media (max-width: 800px) {
+  .kanban { grid-template-columns: 1fr; }
+}
+
 .column {
   background: #020617;
   padding: 15px;
   border-radius: 10px;
+  min-height: 120px;
 }
 
 .column h2 {
   margin-bottom: 10px;
+  font-size: 16px;
+  opacity: 0.85;
 }
 
 .task {
@@ -69,7 +85,32 @@ button {
 .task.high { border-left: 5px solid #ef4444; }
 .task.medium { border-left: 5px solid #f59e0b; }
 .task.low { border-left: 5px solid #22c55e; }
+.task.overdue { outline: 1px solid #ef4444; }
 
 .task small {
   opacity: 0.7;
+}
+
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.icon-btn {
+  background: transparent;
+  color: #94a3b8;
+  padding: 2px 6px;
+  font-size: 13px;
+}
+
+.icon-btn:hover {
+  background: #334155;
+  color: #fff;
 }
