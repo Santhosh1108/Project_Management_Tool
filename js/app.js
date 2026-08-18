@@ -2,7 +2,8 @@ let tasks = getTasks();
 renderTasks(tasks);
 
 document.getElementById("addTask").addEventListener("click", () => {
-  const title = document.getElementById("taskTitle").value;
+  const titleInput = document.getElementById("taskTitle");
+  const title = titleInput.value.trim();
   const priority = document.getElementById("priority").value;
   const dueDate = document.getElementById("dueDate").value;
 
@@ -12,6 +13,7 @@ document.getElementById("addTask").addEventListener("click", () => {
   }
 
   tasks.push({
+    id: generateId(),
     title,
     priority,
     dueDate,
@@ -20,8 +22,13 @@ document.getElementById("addTask").addEventListener("click", () => {
 
   saveTasks(tasks);
   renderTasks(tasks);
+  titleInput.value = "";
+  titleInput.focus();
+});
 
-  document.getElementById("taskTitle").value = "";
+// Allow Enter key to add a task
+document.getElementById("taskTitle").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") document.getElementById("addTask").click();
 });
 
 function canEdit() {
@@ -31,7 +38,7 @@ function canEdit() {
 document.addEventListener("dragstart", e => {
   if (!canEdit()) return;
   if (e.target.classList.contains("task")) {
-    e.dataTransfer.setData("text/plain", e.target.dataset.index);
+    e.dataTransfer.setData("text/plain", e.target.dataset.id);
   }
 });
 
@@ -39,15 +46,48 @@ document.querySelectorAll(".task-list").forEach(column => {
   column.addEventListener("dragover", e => e.preventDefault());
 
   column.addEventListener("drop", e => {
-    if (!canEdit()) return;
-
-    const index = e.dataTransfer.getData("text/plain");
+    if (!canEdit()) {
+      alert("Switch role to Admin to move tasks");
+      return;
+    }
+    const id = e.dataTransfer.getData("text/plain");
     const newStatus = column.parentElement.dataset.status;
-
-    tasks[index].status = newStatus;
-    saveTasks(tasks);
-    renderTasks(tasks);
+    const task = tasks.find(t => t.id === id);
+    if (task) {
+      task.status = newStatus;
+      saveTasks(tasks);
+      renderTasks(tasks);
+    }
   });
+});
+
+// Event delegation for edit/delete buttons (works after re-render)
+document.querySelector(".kanban").addEventListener("click", (e) => {
+  const delBtn = e.target.closest(".del-btn");
+  const editBtn = e.target.closest(".edit-btn");
+
+  if (delBtn) {
+    if (!canEdit()) return alert("Switch role to Admin to delete tasks");
+    const id = delBtn.dataset.id;
+    if (confirm("Delete this task?")) {
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks(tasks);
+      renderTasks(tasks);
+    }
+  }
+
+  if (editBtn) {
+    if (!canEdit()) return alert("Switch role to Admin to edit tasks");
+    const id = editBtn.dataset.id;
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+    const newTitle = prompt("Edit task title:", task.title);
+    if (newTitle && newTitle.trim()) {
+      task.title = newTitle.trim();
+      saveTasks(tasks);
+      renderTasks(tasks);
+    }
+  }
 });
 
 document.getElementById("search").addEventListener("input", applyFilters);
