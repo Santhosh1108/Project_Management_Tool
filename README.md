@@ -1,6 +1,6 @@
 # Flowboard — Project Management Tool
 
-A Jira-style project tracker: multi-project sprint board, backlog, delivery-funnel dashboard, and CSV export. Built with vanilla JavaScript in a modular architecture — no framework, no build step, no dependencies.
+A Jira style project tracker: multi project sprint board, backlog, delivery funnel dashboard, and CSV export. Built with vanilla JavaScript in a modular architecture no framework, no build step, no dependencies.
 
 **[Live Demo →](#)** *((https://project-management-tool-kappa-fawn.vercel.app/))*
 
